@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Entity
 @NoArgsConstructor
@@ -14,6 +16,7 @@ public class Comment {
     private Long id;
     @Setter
     private String content;
+
     @Setter
     @ManyToOne
     private Article article;
