@@ -24,7 +24,7 @@ public class Article {
     @Setter
     @ManyToOne
     private Board board;
-
+    @Setter
     @ManyToOne
     private User user;
 
