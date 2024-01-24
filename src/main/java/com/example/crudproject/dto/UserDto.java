@@ -3,6 +3,7 @@ package com.example.crudproject.dto;
 import com.example.crudproject.entity.Article;
 import com.example.crudproject.entity.Comment;
 import com.example.crudproject.entity.User;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -13,6 +14,7 @@ import java.util.List;
 @Getter
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserDto {
     private Long id;
     private String email;

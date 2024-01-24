@@ -15,6 +15,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Setter
     private String email;
     @Setter
     private String username;
@@ -27,7 +28,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private final List<Comment> commentList = new ArrayList<>();
 
-    public User(String username, String password) {
+    public User(String email, String username, String password) {
+        this.email = email;
         this.username = username;
         this.password = password;
     }
