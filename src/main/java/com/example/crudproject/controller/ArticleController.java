@@ -35,7 +35,6 @@ public class ArticleController {
     public ArticleDto updateArticle(
             @RequestBody
             ArticleDto dto,
-
             @RequestParam("userId")
             Long userId,
             @PathVariable("articleId")
@@ -46,9 +45,11 @@ public class ArticleController {
     //delete
     @DeleteMapping("/{articleId}/delete")
     public String deleteArticle(
+            @RequestParam("userId")
+            Long userId,
             @PathVariable("articleId")
             Long articleId
     ){
-        return articleService.deleteArticle(articleId);
+        return articleService.deleteArticle(userId, articleId);
     }
 }

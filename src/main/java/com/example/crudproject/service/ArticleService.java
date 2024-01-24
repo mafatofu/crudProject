@@ -79,14 +79,20 @@ public class ArticleService {
         return ArticleDto.fromEntity(articleRepository.save(article));
     }
 
-    public String deleteArticle(Long articleId){
-        //단순존재확인
-        if (articleRepository.existsById(articleId)){
-            articleRepository.deleteById(articleId);
-            String answer = "삭제가 완료되었습니다";
-            return answer;
-        } else
+    public String deleteArticle(Long userId, Long articleId){
+        //유저가 존재하지 않는다면
+        if(!userRepository.existsById(userId)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 유저정보가 없습니다.");
+        }
+        //글이 존재하지 않는다면
+        if (!articleRepository.existsById(articleId)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 게시글이 존재하지 않습니다.");
+        }
+
+        articleRepository.deleteById(articleId);
+
+        String answer = "삭제가 완료되었습니다";
+        return answer;
     }
 
 }
