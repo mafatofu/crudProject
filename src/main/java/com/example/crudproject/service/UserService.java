@@ -19,9 +19,9 @@ public class UserService {
     // 가입
     public UserDto create(UserDto dto) {
 
-        // 중복 email 가입 불가 (id로 email 사용 간주)
+        // 중복 email 가입 불가 (User의 ID를 email로 사용 간주)
         if (userRepository.existsByEmail(dto.getEmail()))
-            throw new IllegalArgumentException("이미 가입된 이메일입니다.");
+            throw new IllegalArgumentException("이미 가입된 Email입니다.");
 
         User newUser = new User(
                 dto.getEmail(),
@@ -32,17 +32,30 @@ public class UserService {
     }
 
     // 비밀번호 변경
-    // TODO id로 user를 찾고 email과 password 일치를 검증해야 하는지,
-    // TODO id 없이 입력한 email과 password로만 user를 찾아서 해야 하는지 헷갈림
-    public UserDto updatePassword(Long id, String email, String password) {
-        Optional<User> optionalUser = userRepository.findByEmailAndPassword(email, password);
+    public UserDto updatePassword(Long id, String email, String password, String newPassword) {
+        // PK로 User 찾기
+        Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
             User targetUser = optionalUser.get();
-            targetUser.setPassword(password);
-            return UserDto.fromEntity(userRepository.save(targetUser));
-        }
-        // TODO email이 없는지, password 불일치인지 구별하여 예외 던지도록 수정해야함
-        // throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            // 입력 email과 password 검증
+            if (targetUser.getEmail().equals(email)
+                    && targetUser.getPassword().equals(password)) {
+                // TODO 기존 password와 newPassword가 일치하면 에러 던지도록 수정하고 싶음
+                // TODO newPassword는 dto의 Size(min = 8) 검증을 받지 않아 수정하고 싶음
+                targetUser.setPassword(newPassword);
+                return UserDto.fromEntity(userRepository.save(targetUser));
+            } else if (!targetUser.getEmail().equals(email)) {
+                // 입력 Email 불일치
+                throw new IllegalArgumentException("입력하신 Email을 찾을 수 없습니다.");
+            } else {
+                // 입력 비밀번호 불일치
+                throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            }
+        } else {
         throw new IllegalArgumentException("사용자를 찾을 수 없습니다.");
+        }
     }
+
+
+
 }

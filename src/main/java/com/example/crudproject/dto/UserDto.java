@@ -3,10 +3,15 @@ package com.example.crudproject.dto;
 import com.example.crudproject.entity.Article;
 import com.example.crudproject.entity.Comment;
 import com.example.crudproject.entity.User;
+import jakarta.persistence.Column;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.validation.annotation.Validated;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +22,12 @@ import java.util.List;
 @AllArgsConstructor
 public class UserDto {
     private Long id;
+    @NotNull
+    @Email(message = "올바른 형식의 Email 주소를 입력해 주세요.")
     private String email;
+    @NotNull
     private String username;
+    @NotNull
     private String password;
 
     private final List<ArticleDto> articleDtoList = new ArrayList<>();
