@@ -5,6 +5,7 @@ import com.example.crudproject.entity.User;
 import com.example.crudproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+// import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -40,8 +41,6 @@ public class UserService {
             // 입력 email과 password 검증
             if (targetUser.getEmail().equals(email)
                     && targetUser.getPassword().equals(password)) {
-                // TODO 기존 password와 newPassword가 일치하면 에러 던지도록 수정하고 싶음
-                // TODO newPassword는 dto의 Size(min = 8) 검증을 받지 않아 수정하고 싶음
                 targetUser.setPassword(newPassword);
                 return UserDto.fromEntity(userRepository.save(targetUser));
             } else if (!targetUser.getEmail().equals(email)) {
@@ -54,6 +53,13 @@ public class UserService {
         } else {
         throw new IllegalArgumentException("사용자를 찾을 수 없습니다.");
         }
+    }
+
+    // 회원 탈퇴
+    // TODO 검증 로직 작동하지 않아서 롤백..
+    public void deleteUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다."));
     }
 
 

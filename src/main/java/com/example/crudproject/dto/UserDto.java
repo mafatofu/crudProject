@@ -22,13 +22,15 @@ import java.util.List;
 @AllArgsConstructor
 public class UserDto {
     private Long id;
-    @NotNull
     @Email(message = "올바른 형식의 Email 주소를 입력해 주세요.")
     private String email;
-    @NotNull
+    @Size(min = 4, max = 20)
     private String username;
-    @NotNull
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=])(?=\\S+$).{8,}$",
+            message = "비밀번호는 숫자, 대소문자, 특수문자를 포함하여 8자 이상이어야 합니다.")
     private String password;
+
+
 
     private final List<ArticleDto> articleDtoList = new ArrayList<>();
     private final List<CommentDto> commentDtoList = new ArrayList<>();
