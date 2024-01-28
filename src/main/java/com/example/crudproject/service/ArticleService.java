@@ -8,10 +8,16 @@ import com.example.crudproject.repository.ArticleRepository;
 import com.example.crudproject.repository.BoardRepository;
 import com.example.crudproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,6 +46,13 @@ public class ArticleService {
         article.setUser(user.get());
 
         return ArticleDto.fromEntity(articleRepository.save(article));
+    }
+
+    public Page<ArticleDto> readAllPagination(Integer page, Integer limit) {
+
+        Pageable pageable = PageRequest.of(page - 1, limit, Sort.by(Sort.Direction.DESC, "id"));
+        Page<Article> articlesEntityPage = articleRepository.findAll(pageable);
+        return articlesEntityPage.map(ArticleDto::fromEntity);
     }
 
     public ArticleDto readArticleOne(Long articleId){
