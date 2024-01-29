@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/article")
@@ -52,4 +53,15 @@ public class ArticleController {
     ){
         return articleService.deleteArticle(userId, articleId);
     }
+
+     //search
+     @GetMapping("/search")
+     public List<ArticleDto> searchArticles(
+        @RequestParam("title")                           
+        String title
+    ){
+        return articleService.serchArticles(title);
+    }
+}
+    
 }
