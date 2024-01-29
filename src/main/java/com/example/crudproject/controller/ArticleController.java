@@ -54,9 +54,12 @@ public class ArticleController {
         return articleService.deleteArticle(userId, articleId);
     }
 
-    //search
-        @GetMapping("/search")
-    public List<ArticleDto> searchArticles(@RequestParam("title") String title) {
+     //search
+     @GetMapping("/search")
+     public List<ArticleDto> searchArticles(
+        @RequestParam("title")                           
+        String title
+    ){
         return articleService.serchArticles(title);
     }
 }
