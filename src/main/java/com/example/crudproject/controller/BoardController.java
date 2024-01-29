@@ -8,13 +8,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("board")
@@ -23,6 +22,7 @@ public class BoardController {
     private final BoardService boardService;
     private final ArticleService articleService;
 
+    /*
     @GetMapping
     public String listAllBoardsPagination(
             Model model,
@@ -37,7 +37,9 @@ public class BoardController {
         model.addAttribute("articles", articleDtoPage);
         return "board";
     }
+    */
 
+    /*
     @GetMapping("{boardId}")
     public String listOneBoard(
             @PathVariable("boardId")
@@ -58,5 +60,47 @@ public class BoardController {
 
         model.addAttribute("articles", articleDtoPage);
         return "board";
+    }
+     */
+
+
+    @ResponseBody
+    @GetMapping
+    public Map<String, Object> listAllBoardsPaginationApi(
+            @RequestParam(value = "page", defaultValue = "1")
+            Integer page,
+            @RequestParam(value = "limit", defaultValue = "5")
+            Integer limit
+    ) {
+        List<BoardDto> boards = boardService.readAllTitleAndId();
+        Page<ArticleDto> articleDtoPage = articleService.readAllPagination(page, limit);
+
+        Map<String, Object> apiResponseMap = new HashMap<>();
+        apiResponseMap.put("boards", boards);
+        apiResponseMap.put("articleDtoPage", articleDtoPage);
+        return apiResponseMap;
+    }
+
+    @ResponseBody
+    @GetMapping("{boardId}")
+    public Map<String, Object> listOneBoardApi(
+            @PathVariable("boardId")
+            Long boardId,
+            @RequestParam(value = "page", defaultValue = "1")
+            Integer page,
+            @RequestParam(value = "limit", defaultValue = "5")
+            Integer limit
+    ) {
+
+        Page<ArticleDto> articleDtoPage = boardService.readBoardArticlePage(boardId, page, limit);
+        List<BoardDto> boards = boardService.readAllTitleAndId();
+        BoardDto selected = boardService.readTitleAndId(boardId);
+
+        Map<String, Object> apiResponseMap = new HashMap<>();
+        apiResponseMap.put("boards", boards);
+        apiResponseMap.put("selected", selected);
+        apiResponseMap.put("articleDtoPage", articleDtoPage);
+
+        return apiResponseMap;
     }
 }
