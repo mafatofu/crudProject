@@ -15,9 +15,10 @@ public class CommentController {
 
 
     @PostMapping
-    public CommentDto createComment(@RequestBody CommentDto dto,
-                                    @RequestParam("userId") Long userId,
-                                    @RequestParam("articleId") Long articleId) {
+    public CommentDto createComment(
+            @RequestBody CommentDto dto,
+            @RequestParam("userId") Long userId,
+            @RequestParam("articleId") Long articleId) {
         return commentService.createComment(articleId, userId, dto);
     }
 }
