@@ -31,4 +31,11 @@ public class BoardDto {
         }
         return dto;
     }
+
+    public static BoardDto fromEntityByTitleAndId(Board entity) {
+        BoardDto dto = new BoardDto();
+        dto.id = entity.getId();
+        dto.category = entity.getCategory();
+        return dto;
+    }
 }
