@@ -62,6 +62,6 @@ public class ArticleController {
     ){
         return articleService.serchArticles(title);
     }
-}
+
     
 }
