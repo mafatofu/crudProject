@@ -108,4 +108,15 @@ public class ArticleService {
         return answer;
     }
 
+       public List<ArticleDto> serchArticles(String title) {
+        List<ArticleDto> articleDtoList = new ArrayList<>();
+        List<Article> articles = articleRepository.findByTitleContaining(title);
+
+
+        for(Article article: articles){
+            articleDtoList.add(ArticleDto.fromEntity(article));
+        }
+        return articleDtoList;
+    }
+
 }
