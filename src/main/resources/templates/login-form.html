@@ -21,7 +21,7 @@
         <div class="row gx-5 justify-content-center">
           <div class="col-lg-8 col-xl-6">
             <h1 class="text-center mb-5">로그인</h1>
-            <form action="/login" method="post">
+            <form action="/token/login" method="post">
               <div class="form-floating mb-3">
                 <input class="form-control" id="identifier" name="username" type="text" placeholder="Enter your username...">
                 <label for="identifier">ID</label>
@@ -31,7 +31,7 @@
                 <label for="password">Password</label>
               </div>
               <div class="d-grid"><button class="btn btn-primary btn-lg" id="sign-in-button" type="submit">Submit</button></div>
-              <div style="margin-top: 16px; text-align: right"><a href="/register">회원가입</a></div>
+              <div style="margin-top: 16px; text-align: right"><a href="/token/register">회원가입</a></div>
             </form>
           </div>
         </div>

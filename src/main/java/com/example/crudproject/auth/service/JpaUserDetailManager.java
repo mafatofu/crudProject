@@ -27,11 +27,7 @@ public class JpaUserDetailManager implements UserDetailsManager {
 
     //이메일명으로 사용자 데이터 체크
     public boolean userExistsByEmail(String email) {
-        boolean isExists = userRepository.existsByEmail(email);
-        if(isExists){
-            return true;
-        } else
-            throw new IllegalArgumentException("입력하신 Email을 찾을 수 없습니다.");
+        return userRepository.existsByEmail(email);
     }
     
     //이메일명으로 사용자 데이터 불러오기
@@ -52,7 +48,7 @@ public class JpaUserDetailManager implements UserDetailsManager {
     //아이디가 아닌 이메일로 회원가입함에 따라, CustomUserDetails로 매개변수를 받는다.
     public void createUserByEmail(CustomUserDetails user) {
         //이메일 중복 체크
-        if (this.userExistsByEmail(user.getEmail()))
+        if (userExistsByEmail(user.getEmail()))
             throw new IllegalArgumentException("이미 가입된 Email입니다.");
         try{
             //직접 작성한 유저정보클래스로 사용자 정보 받기
@@ -62,7 +58,7 @@ public class JpaUserDetailManager implements UserDetailsManager {
             User createUser = new User();
             //TODO 추후 Builder로 변경 고민
             createUser.setEmail(user.getEmail());
-            createUser.setUsername(user.getUsername());
+            //createUser.setUsername(user.getUsername());
             createUser.setPassword(user.getPassword());
             userRepository.save(createUser);
         } catch (ClassCastException e){//클래스 변경부분에 대한 예외
